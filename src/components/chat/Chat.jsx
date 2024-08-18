@@ -10,7 +10,7 @@ import upload from "../../lib/upload";
 import { format } from "timeago.js";
 import { deleteMessage } from "../../lib/firebase";
 
-const Chat = ({ infoprop }) => {
+const Chat = ({ infoprop , onBack }) => {
   const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
@@ -23,6 +23,7 @@ const Chat = ({ infoprop }) => {
   const [audioBlob, setAudioBlob] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  // const [lastMessage, setLastMessage] = useState("");
   const mediaRecorderRef = useRef(null);
 
   const { currentUser } = useUserStore();
@@ -35,6 +36,7 @@ const Chat = ({ infoprop }) => {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chat]);
+
 
   useEffect(() => {
     const unSub = onSnapshot(doc(db, "chats", chatId), (res) => {
@@ -167,8 +169,9 @@ const Chat = ({ infoprop }) => {
   return (
     <div className="chat">
       <div className="top">
+        <img onClick={onBack} className="back-button" src="./back.png" alt="Back" />
         <div className="user">
-          <img src={user?.avatar || "./avatar.png"} alt="" />
+        <img src={user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
             <span>{user?.username}</span>
             <p>{user?.description}</p>
